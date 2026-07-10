@@ -60,4 +60,73 @@ describe('ReviewCard', () => {
     const { container } = render(ReviewCard, { props: { review: baseReview } });
     expect(container.querySelector('.review-card-light')).toBeInTheDocument();
   });
+
+  it('applies review-body-card class when reviewVariant="card"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, reviewVariant: 'card' } });
+    expect(container.querySelector('.review-body-card')).toBeInTheDocument();
+  });
+
+  it('applies review-body-testimonial class when reviewVariant="testimonial"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, reviewVariant: 'testimonial' } });
+    expect(container.querySelector('.review-body-testimonial')).toBeInTheDocument();
+  });
+
+  it('renders google-icon SVG when logoVariant="icon"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, logoVariant: 'icon' } });
+    expect(container.querySelector('.google-icon')).toBeInTheDocument();
+    expect(container.querySelector('.google-logo')).not.toBeInTheDocument();
+  });
+
+  it('renders google-logo SVG when logoVariant="full"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, logoVariant: 'full' } });
+    expect(container.querySelector('.google-logo')).toBeInTheDocument();
+    expect(container.querySelector('.google-icon')).not.toBeInTheDocument();
+  });
+
+  it('renders no logo when logoVariant="none"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, logoVariant: 'none' } });
+    expect(container.querySelector('.google-icon')).not.toBeInTheDocument();
+    expect(container.querySelector('.google-logo')).not.toBeInTheDocument();
+  });
+
+  it('hides date when dateDisplay="none"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, dateDisplay: 'none' } });
+    expect(container.querySelector('.reviewer-date')).not.toBeInTheDocument();
+  });
+
+  it('shows date when dateDisplay="relative"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, dateDisplay: 'relative' } });
+    expect(container.querySelector('.reviewer-date')).toBeInTheDocument();
+  });
+
+  it('shows date when dateDisplay="absolute"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, dateDisplay: 'absolute' } });
+    expect(container.querySelector('.reviewer-date')).toBeInTheDocument();
+  });
+
+  it('renders full name when nameDisplay="fullNames"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, nameDisplay: 'fullNames' } });
+    expect(container.textContent).toContain('Jane Smith');
+  });
+
+  it('renders first name only when nameDisplay="firstNamesOnly"', () => {
+    const { container } = render(ReviewCard, { props: { review: baseReview, nameDisplay: 'firstNamesOnly' } });
+    expect(container.textContent).toContain('Jane');
+    expect(container.textContent).not.toContain('Smith');
+  });
+
+  it('uses custom readMoreLabel', () => {
+    const review: GoogleReview = { ...baseReview, comment: longComment };
+    const { getByText } = render(ReviewCard, { props: { review, maxCharacters: 200, readMoreLabel: 'Expand' } });
+    expect(getByText('Expand')).toBeInTheDocument();
+  });
+
+  it('uses custom readLessLabel after expanding', async () => {
+    const review: GoogleReview = { ...baseReview, comment: longComment };
+    const { getByText } = render(ReviewCard, {
+      props: { review, maxCharacters: 200, readMoreLabel: 'Expand', readLessLabel: 'Collapse' },
+    });
+    await fireEvent.click(getByText('Expand'));
+    expect(getByText('Collapse')).toBeInTheDocument();
+  });
 });

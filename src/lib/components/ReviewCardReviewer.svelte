@@ -67,6 +67,7 @@
     }
 
     $: dateStr = (() => {
+        if (dateDisplay === 'none') return '';
         const time = review.updateTime ?? review.createTime ?? '';
         const date = new Date(time);
         return dateDisplay === 'absolute' ? getAbsoluteDate(date) : getRelativeDate(date);
@@ -121,7 +122,7 @@
             {nameStr}
         </p>
 
-        {#if review.updateTime || review.createTime}
+        {#if dateDisplay !== 'none' && (review.updateTime || review.createTime)}
             <p
                 class="reviewer-date {theme === 'light' ? 'reviewer-date-light' : 'reviewer-date-dark'} {reviewerDateClassName} {theme === 'light' ? reviewerDateLightClassName : reviewerDateDarkClassName}"
                 style="{reviewerDateStyle}; {theme === 'light' ? reviewerDateLightStyle : reviewerDateDarkStyle}"
