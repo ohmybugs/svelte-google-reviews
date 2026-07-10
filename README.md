@@ -42,6 +42,7 @@ pnpm add svelte-google-reviews
 ### Using the Featurable API (recommended)
 
 Prerequisites:
+
 1. Create a free account at [https://featurable.com](https://featurable.com)
 2. Create a new Featurable widget
 3. Click **Embed > API** and copy the widget ID
@@ -116,52 +117,52 @@ Provides full control via a Svelte slot. The `reviews` array is passed as a slot
 
 ### Common Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `featurableId` | `string` | — | Featurable widget ID |
-| `reviews` | `GoogleReview[]` | — | Static reviews array (mutually exclusive with `featurableId`) |
-| `isLoading` | `boolean` | — | Controls loading state when passing `reviews` manually |
-| `layout` | `"carousel" \| "badge" \| "custom"` | `"carousel"` | Layout variant |
-| `widgetVersion` | `"v1" \| "v2"` | `"v1"` | Featurable API version |
-| `apiBaseUrl` | `string` | `"https://api.featurable.com"` | Custom API base URL |
-| `nameDisplay` | `"fullNames" \| "firstAndLastInitials" \| "firstNamesOnly"` | `"firstAndLastInitials"` | How reviewer names are shown |
-| `logoVariant` | `"icon" \| "full" \| "none"` | `"icon"` | Google logo style |
-| `maxCharacters` | `number` | `200` | Max characters before "Read more" truncation |
-| `dateDisplay` | `"relative" \| "absolute" \| "none"` | `"relative"` | How review dates are shown |
-| `reviewVariant` | `"card" \| "testimonial"` | `"card"` | Card layout variant |
-| `theme` | `"light" \| "dark"` | `"light"` | Color scheme |
-| `hideEmptyReviews` | `boolean` | `false` | Hide reviews without text |
-| `disableTranslation` | `boolean` | `false` | Use original (untranslated) review text |
-| `accessibility` | `boolean` | `true` | Enable ARIA roles and focus management |
-| `structuredData` | `boolean` | `false` | Inject JSON-LD structured data for SEO |
-| `brandName` | `string` | page title | Brand name for structured data |
-| `productName` | `string` | page title | Product name for structured data |
-| `productDescription` | `string` | `""` | Product description for structured data |
-| `totalReviewCountOverride` | `number` | — | Required for structured data when passing `reviews` manually |
-| `averageRatingOverride` | `number` | — | Required for structured data when passing `reviews` manually |
-| `errorMessage` | `string` | `"Failed to load Google reviews..."` | Custom error text |
-| `loadingMessage` | `string` | `"Loading reviews..."` | Custom loading text |
+| Prop                       | Type                                                        | Default                              | Description                                                   |
+| -------------------------- | ----------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------- |
+| `featurableId`             | `string`                                                    | —                                    | Featurable widget ID                                          |
+| `reviews`                  | `GoogleReview[]`                                            | —                                    | Static reviews array (mutually exclusive with `featurableId`) |
+| `isLoading`                | `boolean`                                                   | —                                    | Controls loading state when passing `reviews` manually        |
+| `layout`                   | `"carousel" \| "badge" \| "custom"`                         | `"carousel"`                         | Layout variant                                                |
+| `widgetVersion`            | `"v1" \| "v2"`                                              | `"v1"`                               | Featurable API version                                        |
+| `apiBaseUrl`               | `string`                                                    | `"https://api.featurable.com"`       | Custom API base URL                                           |
+| `nameDisplay`              | `"fullNames" \| "firstAndLastInitials" \| "firstNamesOnly"` | `"firstAndLastInitials"`             | How reviewer names are shown                                  |
+| `logoVariant`              | `"icon" \| "full" \| "none"`                                | `"icon"`                             | Google logo style                                             |
+| `maxCharacters`            | `number`                                                    | `200`                                | Max characters before "Read more" truncation                  |
+| `dateDisplay`              | `"relative" \| "absolute" \| "none"`                        | `"relative"`                         | How review dates are shown                                    |
+| `reviewVariant`            | `"card" \| "testimonial"`                                   | `"card"`                             | Card layout variant                                           |
+| `theme`                    | `"light" \| "dark"`                                         | `"light"`                            | Color scheme                                                  |
+| `hideEmptyReviews`         | `boolean`                                                   | `false`                              | Hide reviews without text                                     |
+| `disableTranslation`       | `boolean`                                                   | `false`                              | Use original (untranslated) review text                       |
+| `accessibility`            | `boolean`                                                   | `true`                               | Enable ARIA roles and focus management                        |
+| `structuredData`           | `boolean`                                                   | `false`                              | Inject JSON-LD structured data for SEO                        |
+| `brandName`                | `string`                                                    | page title                           | Brand name for structured data                                |
+| `productName`              | `string`                                                    | page title                           | Product name for structured data                              |
+| `productDescription`       | `string`                                                    | `""`                                 | Product description for structured data                       |
+| `totalReviewCountOverride` | `number`                                                    | —                                    | Required for structured data when passing `reviews` manually  |
+| `averageRatingOverride`    | `number`                                                    | —                                    | Required for structured data when passing `reviews` manually  |
+| `errorMessage`             | `string`                                                    | `"Failed to load Google reviews..."` | Custom error text                                             |
+| `loadingMessage`           | `string`                                                    | `"Loading reviews..."`               | Custom loading text                                           |
 
 ### Carousel Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `carouselSpeed` | `number` | `3000` | Autoplay interval in ms |
-| `carouselAutoplay` | `boolean` | `true` | Enable autoplay |
-| `maxItems` | `number` | `3` | Max slides visible at once (desktop) |
-| `readMoreLabel` | `string` | `"Read more"` | Expand label for truncated reviews |
-| `readLessLabel` | `string` | `"Read less"` | Collapse label |
-| `showDots` | `boolean` | `true` | Show navigation dots |
-| `getRelativeDate` | `(date: Date) => string` | built-in | Custom relative date formatter |
-| `getAbsoluteDate` | `(date: Date) => string` | `toLocaleDateString` | Custom absolute date formatter |
+| Prop               | Type                     | Default              | Description                          |
+| ------------------ | ------------------------ | -------------------- | ------------------------------------ |
+| `carouselSpeed`    | `number`                 | `3000`               | Autoplay interval in ms              |
+| `carouselAutoplay` | `boolean`                | `true`               | Enable autoplay                      |
+| `maxItems`         | `number`                 | `3`                  | Max slides visible at once (desktop) |
+| `readMoreLabel`    | `string`                 | `"Read more"`        | Expand label for truncated reviews   |
+| `readLessLabel`    | `string`                 | `"Read less"`        | Collapse label                       |
+| `showDots`         | `boolean`                | `true`               | Show navigation dots                 |
+| `getRelativeDate`  | `(date: Date) => string` | built-in             | Custom relative date formatter       |
+| `getAbsoluteDate`  | `(date: Date) => string` | `toLocaleDateString` | Custom absolute date formatter       |
 
 ### Badge Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `profileUrl` | `string` | auto-fetched | Google Business profile URL |
-| `badgeLabel` | `string` | `"Google Rating"` | Badge heading |
-| `badgeSubheadingFormatter` | `(n: number) => string` | `"Read our N reviews"` | Custom subheading |
+| Prop                       | Type                    | Default                | Description                 |
+| -------------------------- | ----------------------- | ---------------------- | --------------------------- |
+| `profileUrl`               | `string`                | auto-fetched           | Google Business profile URL |
+| `badgeLabel`               | `string`                | `"Google Rating"`      | Badge heading               |
+| `badgeSubheadingFormatter` | `(n: number) => string` | `"Read our N reviews"` | Custom subheading           |
 
 ### CSS Customization
 
@@ -188,7 +189,7 @@ type GoogleReview = {
     displayName: string;
     isAnonymous: boolean;
   };
-  starRating: number;        // 1–5
+  starRating: number; // 1–5
   comment: string;
   createTime: string | null;
   updateTime: string | null;
@@ -207,14 +208,14 @@ npm run storybook
 
 ## Differences from `react-google-reviews`
 
-| Feature | React | Svelte |
-|---|---|---|
-| Custom layout | `renderer` prop (render function) | `<slot let:reviews />` |
-| Style props | `React.CSSProperties` object | inline style `string` |
-| Error/loading content | `React.ReactNode` | `string` |
-| Carousel library | `react-slick` | `embla-carousel-svelte` |
-| CSS | Emotion CSS-in-JS | Scoped `<style>` blocks |
-| CSS import required | Yes (`dist/index.css`) | No |
+| Feature               | React                             | Svelte                  |
+| --------------------- | --------------------------------- | ----------------------- |
+| Custom layout         | `renderer` prop (render function) | `<slot let:reviews />`  |
+| Style props           | `React.CSSProperties` object      | inline style `string`   |
+| Error/loading content | `React.ReactNode`                 | `string`                |
+| Carousel library      | `react-slick`                     | `embla-carousel-svelte` |
+| CSS                   | Emotion CSS-in-JS                 | Scoped `<style>` blocks |
+| CSS import required   | Yes (`dist/index.css`)            | No                      |
 
 ## License
 

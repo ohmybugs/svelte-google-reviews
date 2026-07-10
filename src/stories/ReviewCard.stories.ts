@@ -9,7 +9,10 @@ const meta: Meta<typeof ReviewCard> = {
   argTypes: {
     theme: { control: 'radio', options: ['light', 'dark'] },
     reviewVariant: { control: 'radio', options: ['card', 'testimonial'] },
-    nameDisplay: { control: 'radio', options: ['fullNames', 'firstAndLastInitials', 'firstNamesOnly'] },
+    nameDisplay: {
+      control: 'radio',
+      options: ['fullNames', 'firstAndLastInitials', 'firstNamesOnly'],
+    },
   },
 };
 export default meta;

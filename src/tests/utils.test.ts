@@ -58,7 +58,8 @@ describe('trim', () => {
   });
 
   it('truncates at word boundary', () => {
-    const text = 'hello world this is a test string that is definitely longer than fifty characters';
+    const text =
+      'hello world this is a test string that is definitely longer than fifty characters';
     const result = trim(text, 50);
     expect(result.endsWith('...')).toBe(true);
     // The part before the ellipsis should not contain a partial word

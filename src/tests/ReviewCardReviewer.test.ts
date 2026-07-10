@@ -5,7 +5,11 @@ import type { GoogleReview } from '../lib/types/review';
 
 const baseReview: GoogleReview = {
   reviewId: '1',
-  reviewer: { profilePhotoUrl: 'https://example.com/photo.jpg', displayName: 'Jane Smith', isAnonymous: false },
+  reviewer: {
+    profilePhotoUrl: 'https://example.com/photo.jpg',
+    displayName: 'Jane Smith',
+    isAnonymous: false,
+  },
   starRating: 5,
   comment: 'Great!',
   createTime: '2024-01-15T10:00:00Z',
@@ -52,22 +56,37 @@ describe('ReviewCardReviewer — dateDisplay', () => {
 
   it('calls getRelativeDate when dateDisplay is "relative"', () => {
     let called = false;
-    const getRelativeDate = (date: Date) => { called = true; return 'just now'; };
-    render(ReviewCardReviewer, { props: { review: baseReview, dateDisplay: 'relative', getRelativeDate } });
+    const getRelativeDate = (_date: Date) => {
+      called = true;
+      return 'just now';
+    };
+    render(ReviewCardReviewer, {
+      props: { review: baseReview, dateDisplay: 'relative', getRelativeDate },
+    });
     expect(called).toBe(true);
   });
 
   it('calls getAbsoluteDate when dateDisplay is "absolute"', () => {
     let called = false;
-    const getAbsoluteDate = (date: Date) => { called = true; return 'January 15, 2024'; };
-    render(ReviewCardReviewer, { props: { review: baseReview, dateDisplay: 'absolute', getAbsoluteDate } });
+    const getAbsoluteDate = (_date: Date) => {
+      called = true;
+      return 'January 15, 2024';
+    };
+    render(ReviewCardReviewer, {
+      props: { review: baseReview, dateDisplay: 'absolute', getAbsoluteDate },
+    });
     expect(called).toBe(true);
   });
 
   it('does not call getRelativeDate when dateDisplay is "none"', () => {
     let called = false;
-    const getRelativeDate = (date: Date) => { called = true; return 'just now'; };
-    render(ReviewCardReviewer, { props: { review: baseReview, dateDisplay: 'none', getRelativeDate } });
+    const getRelativeDate = (_date: Date) => {
+      called = true;
+      return 'just now';
+    };
+    render(ReviewCardReviewer, {
+      props: { review: baseReview, dateDisplay: 'none', getRelativeDate },
+    });
     expect(called).toBe(false);
   });
 });
