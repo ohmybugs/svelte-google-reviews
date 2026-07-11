@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2026-07-11
+
+### Fixed
+
+- **ESM**: Add explicit `.js` extensions to relative imports for strict ESM resolution
+- **CI**: Pass `NPM_TOKEN` to `npm publish` via `NODE_AUTH_TOKEN` so the publish workflow can authenticate against the npm registry (OIDC trusted publishing was not working)
+
+### Performance
+
+- **Reviews**: Optimize avatar images for Lighthouse (lazy-load, sizing, decoding hints)
+
+### Documentation
+
+- Rewrite README for readability
+
+### Tests
+
+- Add DOM-metrics regression test to guard Lighthouse budgets
+
 ## [1.0.4] - 2026-07-11
 
 ### Fixed
