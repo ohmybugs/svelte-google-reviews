@@ -1,18 +1,28 @@
 # Svelte Google Reviews
 
 [![CI](https://github.com/ohmybugs/svelte-google-reviews/actions/workflows/ci.yml/badge.svg)](https://github.com/ohmybugs/svelte-google-reviews/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/svelte-google-reviews.svg)](https://www.npmjs.com/package/svelte-google-reviews)
+[![npm downloads](https://img.shields.io/npm/dm/svelte-google-reviews.svg)](https://www.npmjs.com/package/svelte-google-reviews)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/svelte-google-reviews)](https://bundlephobia.com/package/svelte-google-reviews)
+[![license](https://img.shields.io/npm/l/svelte-google-reviews.svg)](./LICENSE)
 
-> **This is a Svelte adaptation of [react-google-reviews](https://github.com/Featurable/react-google-reviews) by [Featurable](https://featurable.com).** The original library is a React component for displaying Google reviews. This package ports it to Svelte 5 with full feature parity, idiomatic Svelte patterns, and no React dependencies.
+Drop Google Reviews into any Svelte 5 or SvelteKit app. Ships three ready-made layouts (badge, carousel, custom slot), pulls data from either the **free Featurable API** or the **Google Places API**, and works out of the box with SSR.
 
----
+**📖 [Live docs & interactive examples →](https://ohmybugs.github.io/svelte-google-reviews/)**
 
-<div align="center">
-  <strong>Making adding Google reviews to any Svelte app beautiful, easy, and free!</strong>
-</div>
+## Table of contents
 
----
-
-**What is it?** A Svelte component to display Google reviews on your website. Uses the Google Places API —or— the free Featurable API to fetch and display reviews.
+- [Features](#features)
+- [Installation](#installation)
+- [Quickstart](#usage)
+- [SvelteKit + SSR](#sveltekit--ssr)
+- [Layouts](#layouts)
+- [Props](#props)
+- [CSS customization](#css-customization)
+- [`GoogleReview` type](#googlereview-type)
+- [Troubleshooting](#troubleshooting)
+- [Differences from `react-google-reviews`](#differences-from-react-google-reviews)
+- [License](#license)
 
 ## Features
 
@@ -79,6 +89,69 @@ The Google Places API is limited to the 5 most recent reviews. Fetch them server
 ```
 
 > **Note:** Never expose your Google API key client-side. Always fetch reviews server-side (e.g. in a SvelteKit `+page.server.ts` load function).
+
+## SvelteKit + SSR
+
+The component is SSR-safe: it renders a placeholder on the server and hydrates on the client. The carousel (embla) only initializes in the browser, so there is no `window is not defined` risk.
+
+### Fetching from Google Places API (server-side)
+
+Create a `+page.server.ts` next to the page that renders `<SvelteGoogleReviews />`:
+
+```ts
+// src/routes/+page.server.ts
+import { GOOGLE_PLACES_API_KEY, GOOGLE_PLACE_ID } from '$env/static/private';
+import type { PageServerLoad } from './$types';
+import type { GoogleReview } from 'svelte-google-reviews';
+
+export const load: PageServerLoad = async ({ fetch }) => {
+  const url = `https://places.googleapis.com/v1/places/${GOOGLE_PLACE_ID}?fields=reviews,rating,userRatingCount&key=${GOOGLE_PLACES_API_KEY}`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  const reviews: GoogleReview[] = (data.reviews ?? []).map((r: any) => ({
+    reviewId: r.name ?? null,
+    reviewer: {
+      displayName: r.authorAttribution?.displayName ?? 'Anonymous',
+      profilePhotoUrl: r.authorAttribution?.photoUri ?? '',
+      isAnonymous: false,
+    },
+    starRating: r.rating,
+    comment: r.originalText?.text ?? r.text?.text ?? '',
+    createTime: r.publishTime ?? null,
+    updateTime: r.publishTime ?? null,
+  }));
+
+  return { reviews, averageRating: data.rating, totalReviewCount: data.userRatingCount };
+};
+```
+
+Then consume it in the page:
+
+```svelte
+<!-- src/routes/+page.svelte -->
+<script lang="ts">
+  import { SvelteGoogleReviews } from 'svelte-google-reviews';
+  import type { PageData } from './$types';
+
+  export let data: PageData;
+</script>
+
+<SvelteGoogleReviews
+  layout="carousel"
+  reviews={data.reviews}
+  isLoading={false}
+  structuredData
+  averageRatingOverride={data.averageRating}
+  totalReviewCountOverride={data.totalReviewCount}
+/>
+```
+
+> The `$env/static/private` import ensures your API key never ships to the client. Cache the load with `setHeaders({ 'cache-control': 'public, max-age=3600' })` to avoid hitting the Places quota on every request.
+
+### Non-SvelteKit environments
+
+For Vite / Astro / plain Svelte apps, wrap the component in a client-only boundary if your SSR framework doesn't natively support hydration, and fetch reviews at build time or from your own backend.
 
 ## Layouts
 
@@ -179,7 +252,7 @@ Every element exposes a `*ClassName` and `*Style` prop for targeted overrides. S
 />
 ```
 
-See the [Storybook docs](#storybook) for a full interactive reference.
+See the [live Storybook docs](https://ohmybugs.github.io/svelte-google-reviews/) for a full interactive reference of every prop.
 
 ## `GoogleReview` Type
 
@@ -200,13 +273,46 @@ type GoogleReview = {
 
 ## Storybook
 
-Interactive component docs are published to GitHub Pages via the included workflow.
+Interactive docs are hosted at **[ohmybugs.github.io/svelte-google-reviews](https://ohmybugs.github.io/svelte-google-reviews/)** — every prop, layout, and theme variant has a live example.
 
 Run locally:
 
 ```sh
 npm run storybook
 ```
+
+## Troubleshooting
+
+### Reviews render but styles are missing
+
+Unlike the React version, this package uses Svelte's scoped `<style>` blocks — **no CSS import is required**. If styles are missing, check that your bundler processes `.svelte` files from `node_modules` (SvelteKit and `@sveltejs/vite-plugin-svelte` do this by default; custom Vite configs may need `include: ['svelte-google-reviews']` in the Svelte plugin options).
+
+### `window is not defined` during SSR
+
+Shouldn't happen — the carousel initializes in `onMount`. If you see it, you're likely rendering the component _before_ your framework's hydration boundary. In SvelteKit, ensure you're not calling it inside a `+page.server.ts` file.
+
+### Google Places API returns only 5 reviews
+
+That is a hard limit of the Places API. Use the [Featurable API](https://featurable.com) (free, includes caching) if you need all reviews.
+
+### Reviews look stale
+
+- **Featurable API:** refreshes every 48 hours by default.
+- **Google Places API:** cache your `+page.server.ts` load with `setHeaders({ 'cache-control': 'public, max-age=3600' })` to avoid rate limits — but don't cache longer than a few hours or new reviews won't appear.
+
+### Hydration mismatch warning in the console
+
+Make sure the `reviews` prop is identical between server and client renders. If you compute anything time-based (e.g. relative dates) at the top level, pass a stable value or override `getRelativeDate` with a deterministic formatter.
+
+### TypeScript can't find `GoogleReview` type
+
+Import types explicitly:
+
+```ts
+import type { GoogleReview } from 'svelte-google-reviews';
+```
+
+If you see `Cannot find module 'svelte-google-reviews' or its corresponding type declarations`, ensure your `tsconfig.json` uses `"moduleResolution": "bundler"` or `"NodeNext"`.
 
 ## Differences from `react-google-reviews`
 
