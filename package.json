@@ -6,6 +6,8 @@
   "repository": "https://github.com/ohmybugs/svelte-google-reviews",
   "homepage": "https://ohmybugs.github.io/svelte-google-reviews/",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "dev": "vite dev",
     "build": "svelte-package",
@@ -65,6 +67,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
       "svelte": "./dist/index.js",
       "default": "./dist/index.js"
     }
