@@ -10,6 +10,18 @@ export default defineConfig({
   },
   test: {
     globals: true,
+    coverage: {
+      provider: 'istanbul',
+      include: ['src/lib/**/*.{ts,svelte}'],
+      exclude: ['src/lib/index.ts'],
+      reporter: ['text', 'html'],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 68,
+        statements: 80,
+      },
+    },
     projects: [
       {
         plugins: [svelte()],
@@ -20,18 +32,6 @@ export default defineConfig({
           environment: 'jsdom',
           setupFiles: ['./src/tests/setup.ts'],
           include: ['src/tests/**/*.test.ts'],
-          coverage: {
-            provider: 'v8',
-            include: ['src/lib/**/*.{ts,svelte}'],
-            exclude: ['src/lib/index.ts'],
-            reporter: ['text', 'html'],
-            thresholds: {
-              lines: 80,
-              functions: 80,
-              branches: 70,
-              statements: 80,
-            },
-          },
         },
       },
       {
