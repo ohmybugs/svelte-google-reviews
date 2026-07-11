@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Theme } from '../types/review';
+  import type { Theme } from '../types/review.js';
   import GoogleIcon from './GoogleIcon.svelte';
 
   /** Average star rating value between 0 and 5 to display in the badge. */

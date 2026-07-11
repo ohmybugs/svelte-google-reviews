@@ -9,7 +9,7 @@
     DateDisplay,
     ReviewVariant,
     Theme,
-  } from '../types/review';
+  } from '../types/review.js';
   import ReviewCard from './ReviewCard.svelte';
 
   export let reviews: GoogleReview[];

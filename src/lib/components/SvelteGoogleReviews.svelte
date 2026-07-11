@@ -10,8 +10,8 @@
     WidgetVersion,
     FeaturableAPIResponse,
     FeaturableAPIResponseV1,
-  } from '../types/review';
-  import { isV2Response, transformV2ResponseToV1 } from '../utils/apiTransformers';
+  } from '../types/review.js';
+  import { isV2Response, transformV2ResponseToV1 } from '../utils/apiTransformers.js';
   import Badge from './Badge.svelte';
   import Carousel from './Carousel.svelte';
   import ErrorState from './ErrorState.svelte';

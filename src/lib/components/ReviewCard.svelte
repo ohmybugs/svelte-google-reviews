@@ -6,8 +6,8 @@
     DateDisplay,
     ReviewVariant,
     Theme,
-  } from '../types/review';
-  import { trim } from '../utils/trim';
+  } from '../types/review.js';
+  import { trim } from '../utils/trim.js';
   import StarRating from './StarRating.svelte';
   import GoogleIcon from './GoogleIcon.svelte';
   import GoogleLogo from './GoogleLogo.svelte';

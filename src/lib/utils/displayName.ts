@@ -1,4 +1,4 @@
-import type { NameDisplay } from '../types/review';
+import type { NameDisplay } from '../types/review.js';
 
 export const displayName = (name: string, config: NameDisplay): string => {
   const split = name.split(' ');

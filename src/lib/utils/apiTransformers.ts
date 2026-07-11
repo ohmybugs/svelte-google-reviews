@@ -3,7 +3,7 @@ import type {
   GoogleReviewV2,
   FeaturableAPIResponseV1,
   FeaturableAPIResponseV2,
-} from '../types/review';
+} from '../types/review.js';
 
 export function transformV2ReviewToV1(reviewV2: GoogleReviewV2): GoogleReview {
   return {

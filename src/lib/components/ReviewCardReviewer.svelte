@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { GoogleReview, NameDisplay, DateDisplay, Theme } from '../types/review';
-  import { displayName } from '../utils/displayName';
-  import { getRelativeDate as defaultGetRelativeDate } from '../utils/getRelativeDate';
+  import type { GoogleReview, NameDisplay, DateDisplay, Theme } from '../types/review.js';
+  import { displayName } from '../utils/displayName.js';
+  import { getRelativeDate as defaultGetRelativeDate } from '../utils/getRelativeDate.js';
 
   export let review: GoogleReview;
   export let nameDisplay: NameDisplay = 'firstAndLastInitials';

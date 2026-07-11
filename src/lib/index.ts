@@ -16,14 +16,14 @@ export type {
   ReviewVariant,
   Theme,
   WidgetVersion,
-} from './types/review';
+} from './types/review.js';
 export type {
   ReviewCardCSSProps,
   BadgeCSSProps,
   CarouselCSSProps,
   ErrorStateCSSProps,
   LoadingStateCSSProps,
-} from './types/cssProps';
-export { displayName } from './utils/displayName';
-export { getRelativeDate } from './utils/getRelativeDate';
-export { trim } from './utils/trim';
+} from './types/cssProps.js';
+export { displayName } from './utils/displayName.js';
+export { getRelativeDate } from './utils/getRelativeDate.js';
+export { trim } from './utils/trim.js';
