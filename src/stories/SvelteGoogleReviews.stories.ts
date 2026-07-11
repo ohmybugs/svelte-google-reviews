@@ -2,6 +2,44 @@ import type { Meta, StoryObj } from '@storybook/svelte';
 import SvelteGoogleReviews from '../lib/components/SvelteGoogleReviews.svelte';
 import CustomSlotExample from './CustomSlotExample.svelte';
 import { sampleReviews } from './sampleReviews';
+import { transformV2ResponseToV1 } from '../lib/utils/apiTransformers';
+import type { FeaturableAPIResponseV2, GoogleReviewV2 } from '../lib/types/review';
+
+const sampleV2Reviews: GoogleReviewV2[] = [
+  {
+    id: 'v2-1',
+    platform: 'google',
+    text: 'Outstanding service, highly recommend!',
+    createdAt: '2024-06-01T10:00:00Z',
+    publishedAt: '2024-06-01T10:00:00Z',
+    author: { name: 'Alice Martin', photoUrl: '' },
+    rating: { value: 5, max: 5 },
+  },
+  {
+    id: 'v2-2',
+    platform: 'google',
+    text: 'Very good experience overall.',
+    createdAt: '2024-05-15T09:00:00Z',
+    publishedAt: '2024-05-15T09:00:00Z',
+    author: { name: 'Bob Chen' },
+    rating: { value: 4, max: 5 },
+  },
+];
+
+const sampleV2Response: FeaturableAPIResponseV2 = {
+  success: true,
+  widget: {
+    gbpLocationSummary: {
+      reviewsCount: 2,
+      rating: 4.5,
+      writeAReviewUri: 'https://g.page/r/example/review',
+    },
+    reviews: sampleV2Reviews,
+  },
+};
+
+const v2Result = transformV2ResponseToV1(sampleV2Response);
+const sampleV2Converted = v2Result.success ? v2Result.reviews : [];
 
 const meta: Meta<typeof SvelteGoogleReviews> = {
   title: 'Components/SvelteGoogleReviews',
@@ -65,6 +103,19 @@ export const BadgeLayout: Story = {
     averageRatingOverride: 4.7,
     totalReviewCountOverride: sampleReviews.length,
     profileUrl: 'https://g.page/r/example',
+  },
+};
+
+/**
+ * Demonstrates the component receiving reviews that were transformed from the
+ * Featurable V2 API format using `transformV2ResponseToV1`. This mirrors what
+ * happens when `widgetVersion="v2"` is used with a live `featurableId`.
+ */
+export const V2DataTransformed: Story = {
+  args: {
+    reviews: sampleV2Converted,
+    layout: 'carousel',
+    isLoading: false,
   },
 };
 
