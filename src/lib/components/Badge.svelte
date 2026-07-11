@@ -2,56 +2,106 @@
   import type { Theme } from '../types/review';
   import GoogleIcon from './GoogleIcon.svelte';
 
+  /** Average star rating value between 0 and 5 to display in the badge. */
   export let averageRating: number;
+  /** Total number of reviews, shown in the subheading below the stars. */
   export let totalReviewCount: number;
+  /** URL of the Google Business Profile page. When provided, the subheading becomes a clickable link. `null` renders plain text instead. */
   export let profileUrl: string | null = null;
+  /** Colour scheme applied to text and backgrounds. Use `light` on light-coloured pages and `dark` on dark-coloured pages. */
   export let theme: Theme = 'light';
+  /** Heading text displayed inside the badge (e.g. "Google Rating"). */
   export let badgeLabel: string = 'Google Rating';
+  /** Formats the subheading string. Receives the review count and returns a display string. */
   export let badgeSubheadingFormatter: (n: number) => string = (n) => `Read our ${n} reviews`;
 
+  /** CSS class added to the badge root element. */
   export let badgeClassName: string = '';
+  /** Inline styles applied to the badge root element. */
   export let badgeStyle: string = '';
+  /** CSS class added to the badge container. */
   export let badgeContainerClassName: string = '';
+  /** Inline styles applied to the badge container. */
   export let badgeContainerStyle: string = '';
+  /** CSS class added to the badge container in light theme. */
   export let badgeContainerLightClassName: string = '';
+  /** Inline styles applied to the badge container in light theme. */
   export let badgeContainerLightStyle: string = '';
+  /** CSS class added to the badge container in dark theme. */
   export let badgeContainerDarkClassName: string = '';
+  /** Inline styles applied to the badge container in dark theme. */
   export let badgeContainerDarkStyle: string = '';
+  /** CSS class added to the Google icon inside the badge. */
   export let badgeGoogleIconClassName: string = '';
+  /** Inline styles applied to the Google icon inside the badge. */
   export let badgeGoogleIconStyle: string = '';
+  /** CSS class added to the inner content container (label + rating + stars). */
   export let badgeInnerContainerClassName: string = '';
+  /** Inline styles applied to the inner content container. */
   export let badgeInnerContainerStyle: string = '';
+  /** CSS class added to the badge heading label. */
   export let badgeLabelClassName: string = '';
+  /** Inline styles applied to the badge heading label. */
   export let badgeLabelStyle: string = '';
+  /** CSS class added to the badge heading label in light theme. */
   export let badgeLabelLightClassName: string = '';
+  /** Inline styles applied to the badge heading label in light theme. */
   export let badgeLabelLightStyle: string = '';
+  /** CSS class added to the badge heading label in dark theme. */
   export let badgeLabelDarkClassName: string = '';
+  /** Inline styles applied to the badge heading label in dark theme. */
   export let badgeLabelDarkStyle: string = '';
+  /** CSS class added to the rating number container. */
   export let badgeRatingContainerClassName: string = '';
+  /** Inline styles applied to the rating number container. */
   export let badgeRatingContainerStyle: string = '';
+  /** CSS class added to the rating number text element. */
   export let badgeRatingClassName: string = '';
+  /** Inline styles applied to the rating number text element. */
   export let badgeRatingStyle: string = '';
+  /** CSS class added to the rating number text in light theme. */
   export let badgeRatingLightClassName: string = '';
+  /** Inline styles applied to the rating number text in light theme. */
   export let badgeRatingLightStyle: string = '';
+  /** CSS class added to the rating number text in dark theme. */
   export let badgeRatingDarkClassName: string = '';
+  /** Inline styles applied to the rating number text in dark theme. */
   export let badgeRatingDarkStyle: string = '';
+  /** CSS class added to the star rating row. */
   export let badgeStarsClassName: string = '';
+  /** Inline styles applied to the star rating row. */
   export let badgeStarsStyle: string = '';
+  /** CSS class added to the star icons container. */
   export let badgeStarsContainerClassName: string = '';
+  /** Inline styles applied to the star icons container. */
   export let badgeStarsContainerStyle: string = '';
+  /** CSS class added to filled (active) star icons. */
   export let badgeStarsFilledClassName: string = '';
+  /** Inline styles applied to filled (active) star icons. */
   export let badgeStarsFilledStyle: string = '';
+  /** CSS class added to empty (inactive) star icons. */
   export let badgeStarsEmptyClassName: string = '';
+  /** Inline styles applied to empty (inactive) star icons. */
   export let badgeStarsEmptyStyle: string = '';
+  /** CSS class added to the container wrapping the review-count link. */
   export let badgeLinkContainerClassName: string = '';
+  /** Inline styles applied to the container wrapping the review-count link. */
   export let badgeLinkContainerStyle: string = '';
+  /** CSS class added to the "Read our N reviews" link. */
   export let badgeLinkClassName: string = '';
+  /** Inline styles applied to the "Read our N reviews" link. */
   export let badgeLinkStyle: string = '';
+  /** CSS class added to the review-count link in light theme. */
   export let badgeLinkLightClassName: string = '';
+  /** Inline styles applied to the review-count link in light theme. */
   export let badgeLinkLightStyle: string = '';
+  /** CSS class added to the review-count link in dark theme. */
   export let badgeLinkDarkClassName: string = '';
+  /** Inline styles applied to the review-count link in dark theme. */
   export let badgeLinkDarkStyle: string = '';
+  /** CSS class added to the inline link variant (rendered without a wrapping block). */
   export let badgeLinkInlineClassName: string = '';
+  /** Inline styles applied to the inline link variant. */
   export let badgeLinkInlineStyle: string = '';
 
   $: percentageFill = (averageRating / 5) * 100;

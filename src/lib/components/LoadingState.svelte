@@ -1,10 +1,17 @@
 <script lang="ts">
+  /** Text label displayed below the spinner while reviews are loading. */
   export let loadingMessage: string = 'Loading reviews...';
+  /** CSS class added to the outer loader wrapper `<div>`. */
   export let loaderClassName: string = '';
+  /** Inline styles applied to the outer loader wrapper `<div>`. */
   export let loaderStyle: string = '';
+  /** CSS class added to the spinner SVG element. */
   export let loaderSpinnerClassName: string = '';
+  /** Inline styles applied to the spinner SVG element. */
   export let loaderSpinnerStyle: string = '';
+  /** CSS class added to the loading label `<p>` element. */
   export let loaderLabelClassName: string = '';
+  /** Inline styles applied to the loading label `<p>` element. */
   export let loaderLabelStyle: string = '';
 </script>
 
