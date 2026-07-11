@@ -1,9 +1,12 @@
 {
   "name": "svelte-google-reviews",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Svelte component for displaying Google Reviews",
   "license": "MIT",
-  "repository": "https://github.com/ohmybugs/svelte-google-reviews",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohmybugs/svelte-google-reviews.git"
+  },
   "homepage": "https://ohmybugs.github.io/svelte-google-reviews/",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
