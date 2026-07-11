@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/svelte';
+import { render, fireEvent } from '@testing-library/svelte';
 import ReviewCardReviewer from '../lib/components/ReviewCardReviewer.svelte';
 import type { GoogleReview } from '../lib/types/review';
 
@@ -167,5 +167,45 @@ describe('ReviewCardReviewer — profile image / fallback', () => {
     const { container } = render(ReviewCardReviewer, { props: { review } });
     const fallback = container.querySelector('.reviewer-profile-fallback');
     expect(fallback?.textContent?.trim()).toBe('J');
+  });
+
+  it.each([
+    ['Bob', 'B'],
+    ['Charlie', 'C'],
+    ['Diana', 'D'],
+    ['Eve', 'E'],
+    ['Frank', 'F'],
+    ['Grace', 'G'],
+    ['Hana', 'H'],
+    ['Ivan', 'I'],
+    ['Karen', 'K'],
+    ['Luis', 'L'],
+    ['Maria', 'M'],
+    ['Nina', 'N'],
+    ['Oscar', 'O'],
+    ['Paul', 'P'],
+    ['Quinn', 'Q'],
+    ['Rose', 'R'],
+    ['Sam', 'S'],
+    ['Tara', 'T'],
+    ['Uma', 'U'],
+    ['Victor', 'V'],
+    ['Wendy', 'W'],
+    ['1stReviewer', '1'],
+  ])('shows correct initial for reviewer name starting with %s', (name, char) => {
+    const review = {
+      ...baseReview,
+      reviewer: { ...baseReview.reviewer, profilePhotoUrl: '', displayName: name },
+    };
+    const { container } = render(ReviewCardReviewer, { props: { review } });
+    expect(container.querySelector('.reviewer-profile-fallback')?.textContent?.trim()).toBe(char);
+  });
+
+  it('falls back to initials when profile image fails to load', async () => {
+    const { container } = render(ReviewCardReviewer, { props: { review: baseReview } });
+    expect(container.querySelector('img')).toBeInTheDocument();
+    expect(container.querySelector('.reviewer-profile-fallback')).not.toBeInTheDocument();
+    await fireEvent.error(container.querySelector('img')!);
+    expect(container.querySelector('.reviewer-profile-fallback')).toBeInTheDocument();
   });
 });
