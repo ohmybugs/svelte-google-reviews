@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2026-07-11
+
+### Fixed
+
+- **Tree-shaking**: Add `sideEffects: false` field to enable proper dead code elimination in bundlers
+- **Type Resolution**: Add root-level `types` field for better TypeScript support
+- **Bundler Compatibility**: Add `import` export condition for improved rspack and modern bundler support
+- **BundlePhobia**: Resolve InstallError by cleaning up extraneous dependencies
+
+## [1.0.3] - 2026-07-11
+
+### Fixed
+
+- Dependency cleanup and bundler optimization
+
 ## [1.0.2] - 2026-07-11
 
 ### Added
