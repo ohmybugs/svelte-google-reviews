@@ -1,5 +1,7 @@
 # Svelte Google Reviews
 
+[![CI](https://github.com/ohmybugs/svelte-google-reviews/actions/workflows/ci.yml/badge.svg)](https://github.com/ohmybugs/svelte-google-reviews/actions/workflows/ci.yml)
+
 > **This is a Svelte adaptation of [react-google-reviews](https://github.com/Featurable/react-google-reviews) by [Featurable](https://featurable.com).** The original library is a React component for displaying Google reviews. This package ports it to Svelte 5 with full feature parity, idiomatic Svelte patterns, and no React dependencies.
 
 ---
