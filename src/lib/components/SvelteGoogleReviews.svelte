@@ -70,6 +70,8 @@
   export let getRelativeDate: ((date: Date) => string) | undefined = undefined;
   /** Custom formatter for absolute dates. Receives a `Date`, returns a string. Overrides the built-in formatter when `dateDisplay="absolute"`. */
   export let getAbsoluteDate: ((date: Date) => string) | undefined = undefined;
+  /** Native `loading` attribute applied to reviewer avatars. Defaults to `lazy`; set to `eager` when the widget is above the fold to avoid delaying LCP. */
+  export let imageLoading: 'lazy' | 'eager' = 'lazy';
 
   // --- Badge-specific ---
   /** URL of your Google Business Profile, linked from the badge subheading. Falls back to the URL returned by the API when using `featurableId`. */
@@ -478,6 +480,7 @@
         {readLessLabel}
         {getRelativeDate}
         {getAbsoluteDate}
+        {imageLoading}
         {showDots}
         {accessibility}
         {carouselClassName}

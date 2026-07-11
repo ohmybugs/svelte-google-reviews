@@ -10,6 +10,7 @@
   export let getAbsoluteDate: (date: Date) => string = (date) =>
     date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   export let getRelativeDate: (date: Date) => string = defaultGetRelativeDate;
+  export let imageLoading: 'lazy' | 'eager' = 'lazy';
 
   export let reviewerClassName: string = '';
   export let reviewerStyle: string = '';
@@ -106,19 +107,41 @@
   $: fallbackChar = review.reviewer.isAnonymous
     ? 'A'
     : review.reviewer.displayName[0].toUpperCase();
+
+  // Rewrite Google avatar URLs to request a 96px source (2× the 40px CSS box,
+  // covering hi-DPI displays without paying for the ~250px default). The size
+  // hint lives in the pathname (e.g. `/a/ACg...=s120-c`), so we manipulate the
+  // path via the URL API to stay safe against query strings and fragments.
+  // Non-Google or unparseable URLs pass through unchanged.
+  $: profileSrc = ((): string => {
+    const url = review.reviewer.profilePhotoUrl;
+    if (!url) return '';
+    if (!/googleusercontent\.com|ggpht\.com/.test(url)) return url;
+    try {
+      const u = new URL(url);
+      u.pathname = u.pathname.replace(/=s\d+(-c)?$/, '') + '=s96-c';
+      return u.toString();
+    } catch {
+      return url;
+    }
+  })();
 </script>
 
 <div class="reviewer {reviewerClassName}" style={reviewerStyle}>
   <div class="reviewer-profile {reviewerProfileClassName}" style={reviewerProfileStyle}>
     {#if !review.reviewer.isAnonymous && review.reviewer.profilePhotoUrl && !fallback}
       <img
-        src={review.reviewer.profilePhotoUrl}
+        src={profileSrc}
         on:error={() => {
           fallback = true;
         }}
         class="reviewer-profile-image {reviewerProfileImageClassName}"
         style={reviewerProfileImageStyle}
         alt={review.reviewer.displayName}
+        loading={imageLoading}
+        decoding="async"
+        width="40"
+        height="40"
       />
     {/if}
 

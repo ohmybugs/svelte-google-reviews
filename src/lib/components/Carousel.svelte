@@ -28,6 +28,7 @@
   export let getAbsoluteDate: ((date: Date) => string) | undefined = undefined;
   export let getRelativeDate: ((date: Date) => string) | undefined = undefined;
   export let showDots: boolean = true;
+  export let imageLoading: 'lazy' | 'eager' = 'lazy';
 
   // CarouselCSSProps
   export let carouselClassName: string = '';
@@ -205,6 +206,7 @@
               {readLessLabel}
               {getRelativeDate}
               {getAbsoluteDate}
+              {imageLoading}
               {reviewCardClassName}
               {reviewCardStyle}
               {reviewCardLightClassName}

@@ -24,6 +24,7 @@
   export let readLessLabel: string = 'Read less';
   export let getAbsoluteDate: ((date: Date) => string) | undefined = undefined;
   export let getRelativeDate: ((date: Date) => string) | undefined = undefined;
+  export let imageLoading: 'lazy' | 'eager' = 'lazy';
 
   export let reviewCardClassName: string = '';
   export let reviewCardStyle: string = '';
@@ -97,6 +98,7 @@
         {theme}
         {getRelativeDate}
         {getAbsoluteDate}
+        {imageLoading}
         {reviewerClassName}
         {reviewerStyle}
         {reviewerProfileClassName}
@@ -178,6 +180,7 @@
         {theme}
         {getRelativeDate}
         {getAbsoluteDate}
+        {imageLoading}
         {reviewerClassName}
         {reviewerStyle}
         {reviewerProfileClassName}
