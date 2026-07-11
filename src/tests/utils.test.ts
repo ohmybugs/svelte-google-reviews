@@ -21,6 +21,14 @@ describe('displayName', () => {
     expect(displayName('Madonna', 'fullNames')).toBe('Madonna');
     expect(displayName('Madonna', 'firstNamesOnly')).toBe('Madonna');
   });
+
+  it('uses last word initial for multi-part names with firstAndLastInitials', () => {
+    expect(displayName('Jane Marie Smith', 'firstAndLastInitials')).toBe('Jane S.');
+  });
+
+  it('returns first name only for multi-part names with firstNamesOnly', () => {
+    expect(displayName('Jane Marie Smith', 'firstNamesOnly')).toBe('Jane');
+  });
 });
 
 describe('getRelativeDate', () => {
@@ -42,6 +50,21 @@ describe('getRelativeDate', () => {
   it('uses "years" for dates over a year ago', () => {
     const date = new Date(Date.now() - 1000 * 60 * 60 * 24 * 400);
     expect(getRelativeDate(date)).toMatch(/year/);
+  });
+
+  it('uses singular "day" for exactly 1 day ago', () => {
+    const date = new Date(Date.now() - 1000 * 60 * 60 * 24);
+    expect(getRelativeDate(date)).toBe('1 day ago');
+  });
+
+  it('uses singular "month" for exactly 1 month ago', () => {
+    const date = new Date(Date.now() - 1000 * 60 * 60 * 24 * 30);
+    expect(getRelativeDate(date)).toBe('1 month ago');
+  });
+
+  it('uses singular "year" for exactly 1 year ago', () => {
+    const date = new Date(Date.now() - 1000 * 60 * 60 * 24 * 366);
+    expect(getRelativeDate(date)).toBe('1 year ago');
   });
 });
 
