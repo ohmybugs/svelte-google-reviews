@@ -1,6 +1,10 @@
 <script lang="ts">
-  export let className: string = '';
-  export let style: string = '';
+  interface Props {
+    className?: string;
+    style?: string;
+  }
+
+  let { className = '', style = '' }: Props = $props();
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="google-icon {className}" {style}>

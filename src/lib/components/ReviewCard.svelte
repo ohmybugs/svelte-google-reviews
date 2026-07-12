@@ -7,85 +7,106 @@
     ReviewVariant,
     Theme,
   } from '../types/review.js';
+  import type { ReviewCardCSSProps } from '../types/cssProps.js';
   import { trim } from '../utils/trim.js';
   import StarRating from './StarRating.svelte';
   import GoogleIcon from './GoogleIcon.svelte';
   import GoogleLogo from './GoogleLogo.svelte';
   import ReviewCardReviewer from './ReviewCardReviewer.svelte';
 
-  export let review: GoogleReview;
-  export let maxCharacters: number = 200;
-  export let nameDisplay: NameDisplay = 'firstAndLastInitials';
-  export let logoVariant: LogoVariant = 'icon';
-  export let dateDisplay: DateDisplay = 'relative';
-  export let reviewVariant: ReviewVariant = 'card';
-  export let theme: Theme = 'light';
-  export let readMoreLabel: string = 'Read more';
-  export let readLessLabel: string = 'Read less';
-  export let getAbsoluteDate: ((date: Date) => string) | undefined = undefined;
-  export let getRelativeDate: ((date: Date) => string) | undefined = undefined;
-  export let imageLoading: 'lazy' | 'eager' = 'lazy';
+  interface Props extends ReviewCardCSSProps {
+    review: GoogleReview;
+    maxCharacters?: number;
+    nameDisplay?: NameDisplay;
+    logoVariant?: LogoVariant;
+    dateDisplay?: DateDisplay;
+    reviewVariant?: ReviewVariant;
+    theme?: Theme;
+    readMoreLabel?: string;
+    readLessLabel?: string;
+    getAbsoluteDate?: (date: Date) => string;
+    getRelativeDate?: (date: Date) => string;
+    imageLoading?: 'lazy' | 'eager';
+  }
 
-  export let reviewCardClassName: string = '';
-  export let reviewCardStyle: string = '';
-  export let reviewCardLightClassName: string = '';
-  export let reviewCardLightStyle: string = '';
-  export let reviewCardDarkClassName: string = '';
-  export let reviewCardDarkStyle: string = '';
-  export let reviewBodyCardClassName: string = '';
-  export let reviewBodyCardStyle: string = '';
-  export let reviewBodyTestimonialClassName: string = '';
-  export let reviewBodyTestimonialStyle: string = '';
-  export let reviewTextClassName: string = '';
-  export let reviewTextStyle: string = '';
-  export let reviewTextLightClassName: string = '';
-  export let reviewTextLightStyle: string = '';
-  export let reviewTextDarkClassName: string = '';
-  export let reviewTextDarkStyle: string = '';
-  export let reviewReadMoreClassName: string = '';
-  export let reviewReadMoreStyle: string = '';
-  export let reviewReadMoreLightClassName: string = '';
-  export let reviewReadMoreLightStyle: string = '';
-  export let reviewReadMoreDarkClassName: string = '';
-  export let reviewReadMoreDarkStyle: string = '';
-  export let reviewFooterClassName: string = '';
-  export let reviewFooterStyle: string = '';
-  export let reviewerClassName: string = '';
-  export let reviewerStyle: string = '';
-  export let reviewerProfileClassName: string = '';
-  export let reviewerProfileStyle: string = '';
-  export let reviewerProfileImageClassName: string = '';
-  export let reviewerProfileImageStyle: string = '';
-  export let reviewerProfileFallbackClassName: string = '';
-  export let reviewerProfileFallbackStyle: string = '';
-  export let reviewerNameClassName: string = '';
-  export let reviewerNameStyle: string = '';
-  export let reviewerNameLightClassName: string = '';
-  export let reviewerNameLightStyle: string = '';
-  export let reviewerNameDarkClassName: string = '';
-  export let reviewerNameDarkStyle: string = '';
-  export let reviewerDateClassName: string = '';
-  export let reviewerDateStyle: string = '';
-  export let reviewerDateLightClassName: string = '';
-  export let reviewerDateLightStyle: string = '';
-  export let reviewerDateDarkClassName: string = '';
-  export let reviewerDateDarkStyle: string = '';
+  let {
+    review,
+    maxCharacters = 200,
+    nameDisplay = 'firstAndLastInitials',
+    logoVariant = 'icon',
+    dateDisplay = 'relative',
+    reviewVariant = 'card',
+    theme = 'light',
+    readMoreLabel = 'Read more',
+    readLessLabel = 'Read less',
+    getAbsoluteDate = undefined,
+    getRelativeDate = undefined,
+    imageLoading = 'lazy',
+    reviewCardClassName = '',
+    reviewCardStyle = '',
+    reviewCardLightClassName = '',
+    reviewCardLightStyle = '',
+    reviewCardDarkClassName = '',
+    reviewCardDarkStyle = '',
+    reviewBodyCardClassName = '',
+    reviewBodyCardStyle = '',
+    reviewBodyTestimonialClassName = '',
+    reviewBodyTestimonialStyle = '',
+    reviewTextClassName = '',
+    reviewTextStyle = '',
+    reviewTextLightClassName = '',
+    reviewTextLightStyle = '',
+    reviewTextDarkClassName = '',
+    reviewTextDarkStyle = '',
+    reviewReadMoreClassName = '',
+    reviewReadMoreStyle = '',
+    reviewReadMoreLightClassName = '',
+    reviewReadMoreLightStyle = '',
+    reviewReadMoreDarkClassName = '',
+    reviewReadMoreDarkStyle = '',
+    reviewFooterClassName = '',
+    reviewFooterStyle = '',
+    reviewerClassName = '',
+    reviewerStyle = '',
+    reviewerProfileClassName = '',
+    reviewerProfileStyle = '',
+    reviewerProfileImageClassName = '',
+    reviewerProfileImageStyle = '',
+    reviewerProfileFallbackClassName = '',
+    reviewerProfileFallbackStyle = '',
+    reviewerNameClassName = '',
+    reviewerNameStyle = '',
+    reviewerNameLightClassName = '',
+    reviewerNameLightStyle = '',
+    reviewerNameDarkClassName = '',
+    reviewerNameDarkStyle = '',
+    reviewerDateClassName = '',
+    reviewerDateStyle = '',
+    reviewerDateLightClassName = '',
+    reviewerDateLightStyle = '',
+    reviewerDateDarkClassName = '',
+    reviewerDateDarkStyle = '',
+  }: Props = $props();
 
-  let isOpen = false;
+  let isOpen = $state(false);
 
-  $: hasMore = review.comment.length > maxCharacters;
-  $: comment = isOpen ? review.comment : trim(review.comment, maxCharacters);
+  let hasMore = $derived(review.comment.length > maxCharacters);
+  let comment = $derived(isOpen ? review.comment : trim(review.comment, maxCharacters));
 
-  $: cardClass = [
-    'review-card',
-    theme === 'light' ? 'review-card-light' : 'review-card-dark',
-    reviewCardClassName,
-    theme === 'light' ? reviewCardLightClassName : reviewCardDarkClassName,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  let cardClass = $derived(
+    [
+      'review-card',
+      theme === 'light' ? 'review-card-light' : 'review-card-dark',
+      reviewCardClassName,
+      theme === 'light' ? reviewCardLightClassName : reviewCardDarkClassName,
+    ]
+      .filter(Boolean)
+      .join(' ')
+  );
 
-  $: cardStyle = `${reviewCardStyle}; ${theme === 'light' ? reviewCardLightStyle : reviewCardDarkStyle}`;
+  let cardStyle = $derived(
+    `${reviewCardStyle}; ${theme === 'light' ? reviewCardLightStyle : reviewCardDarkStyle}`
+  );
 </script>
 
 <div class={cardClass} style={cardStyle}>
@@ -151,7 +172,7 @@
 
       {#if hasMore}
         <button
-          on:click={() => (isOpen = !isOpen)}
+          onclick={() => (isOpen = !isOpen)}
           class="read-more {theme === 'light'
             ? 'read-more-light'
             : 'read-more-dark'} {reviewReadMoreClassName} {theme === 'light'

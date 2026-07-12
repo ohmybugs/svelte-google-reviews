@@ -2,45 +2,50 @@
   import SvelteGoogleReviews from '../lib/components/SvelteGoogleReviews.svelte';
   import type { GoogleReview } from '../lib/types/review';
 
-  export let reviews: GoogleReview[] = [];
-  export let isLoading: boolean | undefined = undefined;
-  export let hideEmptyReviews: boolean = false;
-  export let disableTranslation: boolean = false;
+  interface Props {
+    reviews?: GoogleReview[];
+    isLoading?: boolean;
+    hideEmptyReviews?: boolean;
+    disableTranslation?: boolean;
+  }
+
+  let {
+    reviews = [],
+    isLoading = undefined,
+    hideEmptyReviews = false,
+    disableTranslation = false,
+  }: Props = $props();
 </script>
 
 <!--
-  Example: layout="custom" exposes `reviews` as a slot prop.
-  Use `let:reviews` to receive the processed review data and render
-  anything you like — a grid, a table, a masonry layout, etc.
+  Example: layout="custom" exposes reviews via the `children` snippet.
+  Declare a `{#snippet children({ reviews })}` block to receive the
+  processed review data and render anything you like — a grid, a table,
+  a masonry layout, etc.
 -->
-<SvelteGoogleReviews
-  {reviews}
-  {isLoading}
-  {hideEmptyReviews}
-  {disableTranslation}
-  layout="custom"
-  let:reviews={processedReviews}
->
-  <div class="custom-grid">
-    {#each processedReviews as review (review.reviewId)}
-      <div class="custom-card">
-        <div class="custom-card__header">
-          <img
-            src={review.reviewer.profilePhotoUrl}
-            alt={review.reviewer.displayName}
-            class="custom-card__avatar"
-          />
-          <div>
-            <strong class="custom-card__name">{review.reviewer.displayName}</strong>
-            <div class="custom-card__stars">
-              {'★'.repeat(review.starRating)}{'☆'.repeat(5 - review.starRating)}
+<SvelteGoogleReviews {reviews} {isLoading} {hideEmptyReviews} {disableTranslation} layout="custom">
+  {#snippet children({ reviews: processedReviews })}
+    <div class="custom-grid">
+      {#each processedReviews as review (review.reviewId)}
+        <div class="custom-card">
+          <div class="custom-card__header">
+            <img
+              src={review.reviewer.profilePhotoUrl}
+              alt={review.reviewer.displayName}
+              class="custom-card__avatar"
+            />
+            <div>
+              <strong class="custom-card__name">{review.reviewer.displayName}</strong>
+              <div class="custom-card__stars">
+                {'★'.repeat(review.starRating)}{'☆'.repeat(5 - review.starRating)}
+              </div>
             </div>
           </div>
+          <p class="custom-card__comment">{review.comment}</p>
         </div>
-        <p class="custom-card__comment">{review.comment}</p>
-      </div>
-    {/each}
-  </div>
+      {/each}
+    </div>
+  {/snippet}
 </SvelteGoogleReviews>
 
 <style>

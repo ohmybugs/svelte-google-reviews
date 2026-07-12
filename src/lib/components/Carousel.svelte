@@ -10,93 +10,112 @@
     ReviewVariant,
     Theme,
   } from '../types/review.js';
+  import type { CarouselCSSProps, ReviewCardCSSProps } from '../types/cssProps.js';
   import ReviewCard from './ReviewCard.svelte';
 
-  export let reviews: GoogleReview[];
-  export let maxCharacters: number = 200;
-  export let nameDisplay: NameDisplay = 'firstAndLastInitials';
-  export let logoVariant: LogoVariant = 'icon';
-  export let dateDisplay: DateDisplay = 'relative';
-  export let reviewVariant: ReviewVariant = 'card';
-  export let carouselAutoplay: boolean = true;
-  export let carouselSpeed: number = 3000;
-  export let maxItems: number = 3;
-  export let theme: Theme = 'light';
-  export let accessibility: boolean = true;
-  export let readMoreLabel: string = 'Read more';
-  export let readLessLabel: string = 'Read less';
-  export let getAbsoluteDate: ((date: Date) => string) | undefined = undefined;
-  export let getRelativeDate: ((date: Date) => string) | undefined = undefined;
-  export let showDots: boolean = true;
-  export let imageLoading: 'lazy' | 'eager' = 'lazy';
+  interface Props extends CarouselCSSProps, ReviewCardCSSProps {
+    reviews: GoogleReview[];
+    maxCharacters?: number;
+    nameDisplay?: NameDisplay;
+    logoVariant?: LogoVariant;
+    dateDisplay?: DateDisplay;
+    reviewVariant?: ReviewVariant;
+    carouselAutoplay?: boolean;
+    carouselSpeed?: number;
+    maxItems?: number;
+    theme?: Theme;
+    accessibility?: boolean;
+    readMoreLabel?: string;
+    readLessLabel?: string;
+    getAbsoluteDate?: (date: Date) => string;
+    getRelativeDate?: (date: Date) => string;
+    showDots?: boolean;
+    imageLoading?: 'lazy' | 'eager';
+  }
 
-  // CarouselCSSProps
-  export let carouselClassName: string = '';
-  export let carouselStyle: string = '';
-  export let carouselBtnClassName: string = '';
-  export let carouselBtnStyle: string = '';
-  export let carouselBtnLeftClassName: string = '';
-  export let carouselBtnLeftStyle: string = '';
-  export let carouselBtnRightClassName: string = '';
-  export let carouselBtnRightStyle: string = '';
-  export let carouselBtnLightClassName: string = '';
-  export let carouselBtnLightStyle: string = '';
-  export let carouselBtnDarkClassName: string = '';
-  export let carouselBtnDarkStyle: string = '';
-  export let carouselBtnIconClassName: string = '';
-  export let carouselBtnIconStyle: string = '';
-  export let carouselCardClassName: string = '';
-  export let carouselCardStyle: string = '';
+  let {
+    reviews,
+    maxCharacters = 200,
+    nameDisplay = 'firstAndLastInitials',
+    logoVariant = 'icon',
+    dateDisplay = 'relative',
+    reviewVariant = 'card',
+    carouselAutoplay = true,
+    carouselSpeed = 3000,
+    maxItems = 3,
+    theme = 'light',
+    accessibility = true,
+    readMoreLabel = 'Read more',
+    readLessLabel = 'Read less',
+    getAbsoluteDate = undefined,
+    getRelativeDate = undefined,
+    showDots = true,
+    imageLoading = 'lazy',
+    carouselClassName = '',
+    carouselStyle = '',
+    carouselBtnClassName = '',
+    carouselBtnStyle = '',
+    carouselBtnLeftClassName = '',
+    carouselBtnLeftStyle = '',
+    carouselBtnRightClassName = '',
+    carouselBtnRightStyle = '',
+    carouselBtnLightClassName = '',
+    carouselBtnLightStyle = '',
+    carouselBtnDarkClassName = '',
+    carouselBtnDarkStyle = '',
+    carouselBtnIconClassName = '',
+    carouselBtnIconStyle = '',
+    carouselCardClassName = '',
+    carouselCardStyle = '',
+    reviewCardClassName = '',
+    reviewCardStyle = '',
+    reviewCardLightClassName = '',
+    reviewCardLightStyle = '',
+    reviewCardDarkClassName = '',
+    reviewCardDarkStyle = '',
+    reviewBodyCardClassName = '',
+    reviewBodyCardStyle = '',
+    reviewBodyTestimonialClassName = '',
+    reviewBodyTestimonialStyle = '',
+    reviewTextClassName = '',
+    reviewTextStyle = '',
+    reviewTextLightClassName = '',
+    reviewTextLightStyle = '',
+    reviewTextDarkClassName = '',
+    reviewTextDarkStyle = '',
+    reviewReadMoreClassName = '',
+    reviewReadMoreStyle = '',
+    reviewReadMoreLightClassName = '',
+    reviewReadMoreLightStyle = '',
+    reviewReadMoreDarkClassName = '',
+    reviewReadMoreDarkStyle = '',
+    reviewFooterClassName = '',
+    reviewFooterStyle = '',
+    reviewerClassName = '',
+    reviewerStyle = '',
+    reviewerProfileClassName = '',
+    reviewerProfileStyle = '',
+    reviewerProfileImageClassName = '',
+    reviewerProfileImageStyle = '',
+    reviewerProfileFallbackClassName = '',
+    reviewerProfileFallbackStyle = '',
+    reviewerNameClassName = '',
+    reviewerNameStyle = '',
+    reviewerNameLightClassName = '',
+    reviewerNameLightStyle = '',
+    reviewerNameDarkClassName = '',
+    reviewerNameDarkStyle = '',
+    reviewerDateClassName = '',
+    reviewerDateStyle = '',
+    reviewerDateLightClassName = '',
+    reviewerDateLightStyle = '',
+    reviewerDateDarkClassName = '',
+    reviewerDateDarkStyle = '',
+  }: Props = $props();
 
-  // ReviewCardCSSProps
-  export let reviewCardClassName: string = '';
-  export let reviewCardStyle: string = '';
-  export let reviewCardLightClassName: string = '';
-  export let reviewCardLightStyle: string = '';
-  export let reviewCardDarkClassName: string = '';
-  export let reviewCardDarkStyle: string = '';
-  export let reviewBodyCardClassName: string = '';
-  export let reviewBodyCardStyle: string = '';
-  export let reviewBodyTestimonialClassName: string = '';
-  export let reviewBodyTestimonialStyle: string = '';
-  export let reviewTextClassName: string = '';
-  export let reviewTextStyle: string = '';
-  export let reviewTextLightClassName: string = '';
-  export let reviewTextLightStyle: string = '';
-  export let reviewTextDarkClassName: string = '';
-  export let reviewTextDarkStyle: string = '';
-  export let reviewReadMoreClassName: string = '';
-  export let reviewReadMoreStyle: string = '';
-  export let reviewReadMoreLightClassName: string = '';
-  export let reviewReadMoreLightStyle: string = '';
-  export let reviewReadMoreDarkClassName: string = '';
-  export let reviewReadMoreDarkStyle: string = '';
-  export let reviewFooterClassName: string = '';
-  export let reviewFooterStyle: string = '';
-  export let reviewerClassName: string = '';
-  export let reviewerStyle: string = '';
-  export let reviewerProfileClassName: string = '';
-  export let reviewerProfileStyle: string = '';
-  export let reviewerProfileImageClassName: string = '';
-  export let reviewerProfileImageStyle: string = '';
-  export let reviewerProfileFallbackClassName: string = '';
-  export let reviewerProfileFallbackStyle: string = '';
-  export let reviewerNameClassName: string = '';
-  export let reviewerNameStyle: string = '';
-  export let reviewerNameLightClassName: string = '';
-  export let reviewerNameLightStyle: string = '';
-  export let reviewerNameDarkClassName: string = '';
-  export let reviewerNameDarkStyle: string = '';
-  export let reviewerDateClassName: string = '';
-  export let reviewerDateStyle: string = '';
-  export let reviewerDateLightClassName: string = '';
-  export let reviewerDateLightStyle: string = '';
-  export let reviewerDateDarkClassName: string = '';
-  export let reviewerDateDarkStyle: string = '';
-
-  let emblaApi: EmblaCarouselType | undefined;
-  let selectedIndex = 0;
-  let scrollSnaps: number[] = [];
+  let emblaApi: EmblaCarouselType | undefined = $state(undefined);
+  let selectedIndex = $state(0);
+  let scrollSnaps: number[] = $state([]);
 
   function extendArray<T>(array: T[], targetLength: number): T[] {
     if (array.length === 0) return [];
@@ -109,16 +128,18 @@
     return result;
   }
 
-  $: displayReviews = reviews.length < maxItems ? extendArray(reviews, maxItems) : reviews;
+  let displayReviews = $derived(
+    reviews.length < maxItems ? extendArray(reviews, maxItems) : reviews
+  );
 
-  $: plugins = carouselAutoplay
-    ? [Autoplay({ delay: carouselSpeed, stopOnInteraction: false })]
-    : [];
+  let plugins = $derived(
+    carouselAutoplay ? [Autoplay({ delay: carouselSpeed, stopOnInteraction: false })] : []
+  );
 
-  $: options = {
+  let options = $derived({
     loop: true,
     align: 'start' as const,
-  };
+  });
 
   function onInit(event: CustomEvent<EmblaCarouselType>) {
     emblaApi = event.detail;
@@ -135,9 +156,11 @@
     emblaApi?.scrollNext();
   }
 
-  $: btnThemeClass = theme === 'light' ? 'carousel-btn-light' : 'carousel-btn-dark';
-  $: btnThemeClassName = theme === 'light' ? carouselBtnLightClassName : carouselBtnDarkClassName;
-  $: btnThemeStyle = theme === 'light' ? carouselBtnLightStyle : carouselBtnDarkStyle;
+  let btnThemeClass = $derived(theme === 'light' ? 'carousel-btn-light' : 'carousel-btn-dark');
+  let btnThemeClassName = $derived(
+    theme === 'light' ? carouselBtnLightClassName : carouselBtnDarkClassName
+  );
+  let btnThemeStyle = $derived(theme === 'light' ? carouselBtnLightStyle : carouselBtnDarkStyle);
 </script>
 
 <div
@@ -147,7 +170,7 @@
   aria-label="Customer Reviews Carousel"
 >
   <button
-    on:click={prev}
+    onclick={prev}
     class="carousel-btn carousel-btn-left {btnThemeClass} {carouselBtnClassName} {carouselBtnLeftClassName} {btnThemeClassName}"
     style="{carouselBtnStyle}; {carouselBtnLeftStyle}; {btnThemeStyle}"
     aria-label="Previous Review"
@@ -166,7 +189,7 @@
   </button>
 
   <button
-    on:click={next}
+    onclick={next}
     class="carousel-btn carousel-btn-right {btnThemeClass} {carouselBtnClassName} {carouselBtnRightClassName} {btnThemeClassName}"
     style="{carouselBtnStyle}; {carouselBtnRightStyle}; {btnThemeStyle}"
     aria-label="Next Review"
@@ -185,7 +208,7 @@
   </button>
 
   {#key `${carouselAutoplay}-${carouselSpeed}`}
-    <div use:emblaCarouselSvelte={{ options, plugins }} on:emblaInit={onInit} class="embla">
+    <div use:emblaCarouselSvelte={{ options, plugins }} onemblaInit={onInit} class="embla">
       <div class="embla__container">
         {#each displayReviews as review, index (index)}
           <div
@@ -264,7 +287,7 @@
         <button
           class="carousel-dot"
           class:carousel-dot-active={i === selectedIndex}
-          on:click={() => emblaApi?.scrollTo(i)}
+          onclick={() => emblaApi?.scrollTo(i)}
           aria-label="Go to review {i + 1}"
         ></button>
       {/each}
