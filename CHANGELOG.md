@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-07-12
+
+### Changed
+
+- **BREAKING**: Migrate every component from Svelte 4 syntax to Svelte 5 runes (`$props`, `$state`, `$derived`, `$effect`) and `onevent` handlers
+- **BREAKING**: `peerDependencies.svelte` now requires `^5.0.0` only (previously `^4.0.0 || ^5.0.0`) — components using runes cannot compile under Svelte 4
+- **BREAKING**: `SvelteGoogleReviews`'s `layout="custom"` no longer exposes reviews via `<slot let:reviews>`; use the typed `children` snippet instead: `{#snippet children({ reviews })}...{/snippet}`
+
+### Fixed
+
+- **ReviewCardReviewer**: Reset the avatar fallback state when the `review` prop changes, since the carousel can reuse a component instance across different reviews (keyed by slide index)
+
+### Documentation
+
+- Update README and Storybook docs for the `children`-snippet custom layout pattern
+- Consolidate CSS-prop JSDoc into `src/lib/types/cssProps.ts`, shared across components instead of duplicated per file
+
 ## [1.0.5] - 2026-07-11
 
 ### Fixed
