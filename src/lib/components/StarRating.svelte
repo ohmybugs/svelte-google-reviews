@@ -1,8 +1,12 @@
 <script lang="ts">
   import StarIcon from './StarIcon.svelte';
 
-  export let rating: number;
-  export let className: string = '';
+  interface Props {
+    rating: number;
+    className?: string;
+  }
+
+  let { rating, className = '' }: Props = $props();
 </script>
 
 <div class="star-rating {className}">

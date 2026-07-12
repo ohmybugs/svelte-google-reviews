@@ -77,12 +77,12 @@ Prerequisites:
 The Google Places API is limited to the 5 most recent reviews. Fetch them server-side and pass them directly:
 
 ```svelte
-<script>
+<script lang="ts">
   import { SvelteGoogleReviews } from 'svelte-google-reviews';
   import type { GoogleReview } from 'svelte-google-reviews';
 
   // Fetched server-side via Google Places API
-  export let reviews: GoogleReview[];
+  let { reviews }: { reviews: GoogleReview[] } = $props();
 </script>
 
 <SvelteGoogleReviews layout="badge" {reviews} isLoading={false} />
@@ -134,7 +134,7 @@ Then consume it in the page:
   import { SvelteGoogleReviews } from 'svelte-google-reviews';
   import type { PageData } from './$types';
 
-  export let data: PageData;
+  let { data }: { data: PageData } = $props();
 </script>
 
 <SvelteGoogleReviews
@@ -173,20 +173,22 @@ An interactive, autoplay carousel showing individual review cards.
 
 ### Custom
 
-Provides full control via a Svelte slot. The `reviews` array is passed as a slot prop.
+Provides full control via a `children` snippet. The `reviews` array is passed to the snippet.
 
 ```svelte
-<SvelteGoogleReviews layout="custom" featurableId={featurableWidgetId} let:reviews>
-  {#each reviews as review}
-    <div>
-      <strong>{review.reviewer.displayName}</strong>
-      <p>{review.comment}</p>
-    </div>
-  {/each}
+<SvelteGoogleReviews layout="custom" featurableId={featurableWidgetId}>
+  {#snippet children({ reviews })}
+    {#each reviews as review}
+      <div>
+        <strong>{review.reviewer.displayName}</strong>
+        <p>{review.comment}</p>
+      </div>
+    {/each}
+  {/snippet}
 </SvelteGoogleReviews>
 ```
 
-> **Migration note from React:** The React `renderer` prop is replaced by Svelte's `<slot let:reviews />` pattern.
+> **Migration note from React:** The React `renderer` prop is replaced by Svelte 5's `children` snippet pattern.
 
 ## Props
 
@@ -318,7 +320,7 @@ If you see `Cannot find module 'svelte-google-reviews' or its corresponding type
 
 | Feature               | React                             | Svelte                  |
 | --------------------- | --------------------------------- | ----------------------- |
-| Custom layout         | `renderer` prop (render function) | `<slot let:reviews />`  |
+| Custom layout         | `renderer` prop (render function) | `children` snippet      |
 | Style props           | `React.CSSProperties` object      | inline style `string`   |
 | Error/loading content | `React.ReactNode`                 | `string`                |
 | Carousel library      | `react-slick`                     | `embla-carousel-svelte` |

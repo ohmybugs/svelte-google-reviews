@@ -1,10 +1,16 @@
 <script lang="ts">
-  /** Message text displayed when an error occurs (e.g. failed API fetch or missing badge data). */
-  export let errorMessage: string = 'Failed to load Google reviews. Please try again later.';
-  /** CSS class added to the error wrapper `<div>`. */
-  export let errorClassName: string = '';
-  /** Inline styles applied to the error wrapper `<div>`. */
-  export let errorStyle: string = '';
+  import type { ErrorStateCSSProps } from '../types/cssProps.js';
+
+  interface Props extends ErrorStateCSSProps {
+    /** Message text displayed when an error occurs (e.g. failed API fetch or missing badge data). */
+    errorMessage?: string;
+  }
+
+  let {
+    errorMessage = 'Failed to load Google reviews. Please try again later.',
+    errorClassName = '',
+    errorStyle = '',
+  }: Props = $props();
 </script>
 
 <div class="error {errorClassName}" style={errorStyle}>

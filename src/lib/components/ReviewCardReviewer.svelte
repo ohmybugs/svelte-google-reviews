@@ -1,39 +1,75 @@
 <script lang="ts">
   import type { GoogleReview, NameDisplay, DateDisplay, Theme } from '../types/review.js';
+  import type { ReviewCardCSSProps } from '../types/cssProps.js';
   import { displayName } from '../utils/displayName.js';
   import { getRelativeDate as defaultGetRelativeDate } from '../utils/getRelativeDate.js';
 
-  export let review: GoogleReview;
-  export let nameDisplay: NameDisplay = 'firstAndLastInitials';
-  export let dateDisplay: DateDisplay = 'relative';
-  export let theme: Theme = 'light';
-  export let getAbsoluteDate: (date: Date) => string = (date) =>
-    date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-  export let getRelativeDate: (date: Date) => string = defaultGetRelativeDate;
-  export let imageLoading: 'lazy' | 'eager' = 'lazy';
+  type ReviewerCSSProps = Pick<
+    ReviewCardCSSProps,
+    | 'reviewerClassName'
+    | 'reviewerStyle'
+    | 'reviewerProfileClassName'
+    | 'reviewerProfileStyle'
+    | 'reviewerProfileImageClassName'
+    | 'reviewerProfileImageStyle'
+    | 'reviewerProfileFallbackClassName'
+    | 'reviewerProfileFallbackStyle'
+    | 'reviewerNameClassName'
+    | 'reviewerNameStyle'
+    | 'reviewerNameLightClassName'
+    | 'reviewerNameLightStyle'
+    | 'reviewerNameDarkClassName'
+    | 'reviewerNameDarkStyle'
+    | 'reviewerDateClassName'
+    | 'reviewerDateStyle'
+    | 'reviewerDateLightClassName'
+    | 'reviewerDateLightStyle'
+    | 'reviewerDateDarkClassName'
+    | 'reviewerDateDarkStyle'
+  >;
 
-  export let reviewerClassName: string = '';
-  export let reviewerStyle: string = '';
-  export let reviewerProfileClassName: string = '';
-  export let reviewerProfileStyle: string = '';
-  export let reviewerProfileImageClassName: string = '';
-  export let reviewerProfileImageStyle: string = '';
-  export let reviewerProfileFallbackClassName: string = '';
-  export let reviewerProfileFallbackStyle: string = '';
-  export let reviewerNameClassName: string = '';
-  export let reviewerNameStyle: string = '';
-  export let reviewerNameLightClassName: string = '';
-  export let reviewerNameLightStyle: string = '';
-  export let reviewerNameDarkClassName: string = '';
-  export let reviewerNameDarkStyle: string = '';
-  export let reviewerDateClassName: string = '';
-  export let reviewerDateStyle: string = '';
-  export let reviewerDateLightClassName: string = '';
-  export let reviewerDateLightStyle: string = '';
-  export let reviewerDateDarkClassName: string = '';
-  export let reviewerDateDarkStyle: string = '';
+  interface Props extends ReviewerCSSProps {
+    review: GoogleReview;
+    nameDisplay?: NameDisplay;
+    dateDisplay?: DateDisplay;
+    theme?: Theme;
+    getAbsoluteDate?: (date: Date) => string;
+    getRelativeDate?: (date: Date) => string;
+    imageLoading?: 'lazy' | 'eager';
+  }
 
-  let fallback = review.reviewer.isAnonymous || !review.reviewer.profilePhotoUrl;
+  let {
+    review,
+    nameDisplay = 'firstAndLastInitials',
+    dateDisplay = 'relative',
+    theme = 'light',
+    getAbsoluteDate = (date) =>
+      date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
+    getRelativeDate = defaultGetRelativeDate,
+    imageLoading = 'lazy',
+    reviewerClassName = '',
+    reviewerStyle = '',
+    reviewerProfileClassName = '',
+    reviewerProfileStyle = '',
+    reviewerProfileImageClassName = '',
+    reviewerProfileImageStyle = '',
+    reviewerProfileFallbackClassName = '',
+    reviewerProfileFallbackStyle = '',
+    reviewerNameClassName = '',
+    reviewerNameStyle = '',
+    reviewerNameLightClassName = '',
+    reviewerNameLightStyle = '',
+    reviewerNameDarkClassName = '',
+    reviewerNameDarkStyle = '',
+    reviewerDateClassName = '',
+    reviewerDateStyle = '',
+    reviewerDateLightClassName = '',
+    reviewerDateLightStyle = '',
+    reviewerDateDarkClassName = '',
+    reviewerDateDarkStyle = '',
+  }: Props = $props();
+
+  let fallback = $state(review.reviewer.isAnonymous || !review.reviewer.profilePhotoUrl);
 
   function getFallbackBgColor(char: string): string {
     switch (char) {
@@ -89,31 +125,35 @@
     }
   }
 
-  $: dateStr = (() => {
+  let dateStr = $derived.by(() => {
     if (dateDisplay === 'none') return '';
     const time = review.updateTime ?? review.createTime ?? '';
     const date = new Date(time);
     return dateDisplay === 'absolute' ? getAbsoluteDate(date) : getRelativeDate(date);
-  })();
+  });
 
-  $: nameStr = review.reviewer.isAnonymous
-    ? 'Anonymous'
-    : displayName(review.reviewer.displayName, nameDisplay);
-
-  $: fallbackBg = getFallbackBgColor(
-    review.reviewer.isAnonymous ? 'a' : review.reviewer.displayName[0].toLowerCase()
+  let nameStr = $derived(
+    review.reviewer.isAnonymous
+      ? 'Anonymous'
+      : displayName(review.reviewer.displayName, nameDisplay)
   );
 
-  $: fallbackChar = review.reviewer.isAnonymous
-    ? 'A'
-    : review.reviewer.displayName[0].toUpperCase();
+  let fallbackBg = $derived(
+    getFallbackBgColor(
+      review.reviewer.isAnonymous ? 'a' : review.reviewer.displayName[0].toLowerCase()
+    )
+  );
+
+  let fallbackChar = $derived(
+    review.reviewer.isAnonymous ? 'A' : review.reviewer.displayName[0].toUpperCase()
+  );
 
   // Rewrite Google avatar URLs to request a 96px source (2× the 40px CSS box,
   // covering hi-DPI displays without paying for the ~250px default). The size
   // hint lives in the pathname (e.g. `/a/ACg...=s120-c`), so we manipulate the
   // path via the URL API to stay safe against query strings and fragments.
   // Non-Google or unparseable URLs pass through unchanged.
-  $: profileSrc = ((): string => {
+  let profileSrc = $derived.by((): string => {
     const url = review.reviewer.profilePhotoUrl;
     if (!url) return '';
     if (!/googleusercontent\.com|ggpht\.com/.test(url)) return url;
@@ -124,7 +164,7 @@
     } catch {
       return url;
     }
-  })();
+  });
 </script>
 
 <div class="reviewer {reviewerClassName}" style={reviewerStyle}>
@@ -132,7 +172,7 @@
     {#if !review.reviewer.isAnonymous && review.reviewer.profilePhotoUrl && !fallback}
       <img
         src={profileSrc}
-        on:error={() => {
+        onerror={() => {
           fallback = true;
         }}
         class="reviewer-profile-image {reviewerProfileImageClassName}"

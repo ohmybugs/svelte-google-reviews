@@ -55,25 +55,27 @@ const meta: Meta<typeof SvelteGoogleReviews> = {
 |--------|-------------|
 | \`carousel\` | Built-in swipeable carousel with navigation buttons |
 | \`badge\` | Compact summary badge showing average rating and review count |
-| \`custom\` | **Bring your own UI** — reviews are passed as a slot prop so you can render them however you like |
+| \`custom\` | **Bring your own UI** — reviews are passed to a \`children\` snippet so you can render them however you like |
 
 ### Using the \`custom\` layout
 
-Set \`layout="custom"\` and use Svelte's \`let:reviews\` directive to receive the processed reviews array inside your own markup:
+Set \`layout="custom"\` and declare a \`{#snippet children({ reviews })}\` block to receive the processed reviews array inside your own markup:
 
 \`\`\`svelte
-<SvelteGoogleReviews reviews={myReviews} layout="custom" let:reviews>
-  <!-- reviews is GoogleReview[] — render anything you want -->
-  {#each reviews as review}
-    <div class="my-card">
-      <p>{review.comment}</p>
-      <span>{review.reviewer.displayName}</span>
-    </div>
-  {/each}
+<SvelteGoogleReviews reviews={myReviews} layout="custom">
+  {#snippet children({ reviews })}
+    <!-- reviews is GoogleReview[] — render anything you want -->
+    {#each reviews as review}
+      <div class="my-card">
+        <p>{review.comment}</p>
+        <span>{review.reviewer.displayName}</span>
+      </div>
+    {/each}
+  {/snippet}
 </SvelteGoogleReviews>
 \`\`\`
 
-The \`reviews\` slot prop contains the **processed** data: filtered (respecting \`hideEmptyReviews\`), translated (respecting \`disableTranslation\`), and mapped — ready to render.
+The \`children\` snippet receives the **processed** data: filtered (respecting \`hideEmptyReviews\`), translated (respecting \`disableTranslation\`), and mapped — ready to render.
         `,
       },
     },
@@ -122,8 +124,8 @@ export const V2DataTransformed: Story = {
 /**
  * `layout="custom"` lets you render reviews using any markup you choose.
  *
- * The component exposes a `reviews` slot prop (type `GoogleReview[]`) via
- * Svelte's `let:reviews` directive. The data has already been filtered and
+ * The component exposes a `children` snippet that receives `{ reviews }`
+ * (type `GoogleReview[]`). The data has already been filtered and
  * processed according to props like `hideEmptyReviews` and `disableTranslation`.
  *
  * This story renders a responsive card grid as a concrete example of what
@@ -148,14 +150,16 @@ export const CustomSlotLayout: Story = {
     docs: {
       description: {
         story: `
-Uses \`layout="custom"\` with a responsive card grid to show how the \`let:reviews\` slot prop works.
+Uses \`layout="custom"\` with a responsive card grid to show how the \`children\` snippet works.
 The \`CustomSlotExample.svelte\` wrapper demonstrates the minimum required pattern:
 
 \`\`\`svelte
-<SvelteGoogleReviews {reviews} layout="custom" let:reviews={processedReviews}>
-  {#each processedReviews as review (review.reviewId)}
-    <!-- your custom markup here -->
-  {/each}
+<SvelteGoogleReviews {reviews} layout="custom">
+  {#snippet children({ reviews: processedReviews })}
+    {#each processedReviews as review (review.reviewId)}
+      <!-- your custom markup here -->
+    {/each}
+  {/snippet}
 </SvelteGoogleReviews>
 \`\`\`
 
