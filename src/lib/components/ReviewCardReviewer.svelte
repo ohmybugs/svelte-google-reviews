@@ -71,6 +71,12 @@
 
   let fallback = $state(review.reviewer.isAnonymous || !review.reviewer.profilePhotoUrl);
 
+  // Reset fallback when `review` changes, since components can be reused
+  // across different reviews (e.g. Carousel keys slides by index).
+  $effect(() => {
+    fallback = review.reviewer.isAnonymous || !review.reviewer.profilePhotoUrl;
+  });
+
   function getFallbackBgColor(char: string): string {
     switch (char) {
       case 'a':

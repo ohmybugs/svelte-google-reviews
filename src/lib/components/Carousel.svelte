@@ -113,7 +113,7 @@
     reviewerDateDarkStyle = '',
   }: Props = $props();
 
-  let emblaApi: EmblaCarouselType | undefined = $state();
+  let emblaApi: EmblaCarouselType | undefined = $state(undefined);
   let selectedIndex = $state(0);
   let scrollSnaps: number[] = $state([]);
 
