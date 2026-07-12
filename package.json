@@ -1,6 +1,6 @@
 {
   "name": "svelte-google-reviews",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Svelte component for displaying Google Reviews",
   "license": "MIT",
   "repository": {
